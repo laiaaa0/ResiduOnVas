@@ -1,6 +1,6 @@
 from translate import Translator
 
-
+# TODO : Check if adding from_lang improves results
 class VirtualTranslator:
     def __init__(self, lang):
         self._translator = Translator(to_lang=lang)
@@ -10,7 +10,7 @@ class VirtualTranslator:
 
 
 class CatalanTranslator(VirtualTranslator):
-    def __init__(self):
+    def __init__(self): 
         super().__init__("ca")
 
 
