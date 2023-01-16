@@ -7,7 +7,8 @@ import type_to_emoji
 if not os.environ.get("TELEGRAM_BOT_TOKEN"):
     raise Exception("Please define TELEGRAM_BOT_TOKEN environment variable")
 
-class TelegramBotHandler():
+
+class TelegramBotHandler:
     def __init__(self):
         token = os.environ.get("TELEGRAM_BOT_TOKEN")
         self.bot = telepot.Bot(token)
@@ -29,7 +30,7 @@ class TelegramBotHandler():
     def classify_command(self, residue):
         try:
             found_residue, destination = self.searcher.search(residue)
-            if destination!="":
+            if destination != "":
                 emoji = type_to_emoji.emoji_from_type(destination)
                 return f"El residu <u> {found_residue}</u> ha d'anar a {destination} {emoji}"
         except:
@@ -38,19 +39,19 @@ class TelegramBotHandler():
 
     def handle(self, msg):
         content_type, chat_type, chat_id = telepot.glance(msg)
-        if content_type != 'text':
+        if content_type != "text":
             self.bot.sendMessage(chat_id, "This is not a command!")
             return
-        chat_id = msg['chat']['id']
-        chat_text = msg['text']
+        chat_id = msg["chat"]["id"]
+        chat_text = msg["text"]
         command = self.command_from_text(chat_text)
-        logging.info(f'Got command {command} from id {chat_id}')
+        logging.info(f"Got command {command} from id {chat_id}")
 
-        if command == '/onvas':
+        if command == "/onvas":
             residue = self.rest_of_message(chat_text)
-            
+
             reply = self.classify_command(residue)
-            self.bot.sendMessage(chat_id, reply,parse_mode="HTML")
+            self.bot.sendMessage(chat_id, reply, parse_mode="HTML")
         else:
             reply = self.classify_command(chat_text)
-            self.bot.sendMessage(chat_id, reply,parse_mode="HTML")
+            self.bot.sendMessage(chat_id, reply, parse_mode="HTML")
